@@ -1,9 +1,10 @@
 module.exports = app =>{
     var router = require('express').Router();
     const authenticator = require('../middleware/authenticator')
+    const controller = require('../controllers/controller')
 
     //Auth routes
-    router.post('/auth/signup', authenticator.register)
+    router.post('/auth/signup', authenticator.register, controller.signup)
     router.post('/auth/login', authenticator.login)
 
     //Notes routes
@@ -19,4 +20,5 @@ module.exports = app =>{
 
     router.get('/notes/search', authenticator.authenticate)
 
+    app.use('/', router)
 };

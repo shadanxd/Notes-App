@@ -131,3 +131,4 @@ dist
 
 #Config
 /app/config/
+/app/config/db-config.js
