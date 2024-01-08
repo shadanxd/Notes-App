@@ -16,7 +16,7 @@ module.exports = app =>{
 
     router.delete('/notes/delete/:id', authenticator.authenticate, controller.deleteNote)
 
-    router.get('/notes/:id/share', authenticator.authenticate)
+    router.get('/notes/:id/share', authenticator.authenticate, controller.shareNote)
 
     router.get('/search', authenticator.authenticate, controller.searchNote)
 

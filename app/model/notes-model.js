@@ -51,7 +51,7 @@ const Note = sequelize.define('Note', {
   // Custom method to perform a full-text search using raw SQL query
   Note.searchKeyword = async (user_id, keyword) => {
     const query = `
-      SELECT title, content
+      SELECT note_id, title, content
       FROM "Notes"
       WHERE "user_id" = :user_id
         AND "content_vector" @@ to_tsquery('english', :keyword)
