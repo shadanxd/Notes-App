@@ -82,7 +82,7 @@ exports.findAll = async (req, res) => {
       res.status(500).send({ message: 'Internal Server Error' });
     }
   };
-
+  
   exports.deleteNote = async (req, res) => {
     try {
       const notes = await NoteModel.destroy({
@@ -94,6 +94,28 @@ exports.findAll = async (req, res) => {
         return;
       }
       res.status(200).send({message: "Deleted"});
+      return;
+    } catch (error) {
+      console.error(error);
+      res.status(500).send({ message: 'Internal Server Error' });
+    }
+  };
+
+  exports.updateNote = async (req, res) => {
+    try {
+      const notes = await NoteModel.update({
+        content: req.body.content,
+        title: req.body.title
+      }, {
+        where: { user_id: req.session.user_id, note_id: req.params.id },
+        individualHooks: true
+      });
+  
+      if (notes[0]==0) {
+        res.status(400).send({ message: 'No notes found' });
+        return;
+      }
+      res.status(200).send({message: "note updated"});
       return;
     } catch (error) {
       console.error(error);

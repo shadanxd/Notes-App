@@ -43,6 +43,11 @@ const Note = sequelize.define('Note', {
     note.content_vector = generateTsVector(note.content);
   });
   
+  Note.beforeUpdate(async (note) => {
+    // logic to update content_vector here
+    note.content_vector = generateTsVector(note.content);
+  });
+
   // Custom method to perform a full-text search using raw SQL query
   Note.searchByKeyword = async (keyword) => {
     const query = `

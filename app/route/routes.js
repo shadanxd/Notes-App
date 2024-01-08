@@ -12,7 +12,7 @@ module.exports = app =>{
     router.get('/notes/:id', authenticator.authenticate, controller.findOne)
 
     router.post('/notes/create', authenticator.authenticate, controller.addNewNote)
-    router.put('/notes/update/:id', authenticator.authenticate)
+    router.put('/notes/update/:id', authenticator.authenticate, controller.updateNote)
 
     router.delete('/notes/delete/:id', authenticator.authenticate, controller.deleteNote)
 
