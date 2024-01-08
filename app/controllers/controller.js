@@ -48,7 +48,7 @@ exports.findAll = async (req, res) => {
         attributes: ['title', 'content'],
       });
   
-      if (!notes) {
+      if (!notes || notes.length == 0) {
         res.status(400).send({ message: 'No notes found' });
         return;
       }
@@ -75,10 +75,25 @@ exports.findAll = async (req, res) => {
         res.status(400).send({ message: 'No notes found' });
         return;
       }
-  
-      // Use map to convert each Sequelize instance to JSON
-  
       res.status(200).send(notes);
+      return;
+    } catch (error) {
+      console.error(error);
+      res.status(500).send({ message: 'Internal Server Error' });
+    }
+  };
+
+  exports.deleteNote = async (req, res) => {
+    try {
+      const notes = await NoteModel.destroy({
+        where: { user_id: req.session.user_id, note_id: req.params.id }
+      });
+  
+      if (!notes) {
+        res.status(400).send({ message: 'No notes found' });
+        return;
+      }
+      res.status(200).send({message: "Deleted"});
       return;
     } catch (error) {
       console.error(error);
