@@ -37,9 +37,10 @@ exports.login = async (req, res) =>{
     if (!passwordMatch) {
       return res.status(401).json({ message: 'Invalid credentials' });
     }
-
+    user_id = existing_user.id
+    console.log("user_id", user_id)
     // Generate a JWT token
-    const token = jwt.sign({ username }, appConfig.SECRET_KEY, { expiresIn: '1h' });
+    const token = jwt.sign({ user_id }, appConfig.SECRET_KEY, { expiresIn: '1h' });
 
     res.json({ token });
   } catch (error) {
@@ -57,7 +58,8 @@ const token = req.headers.authorization;
   try {
     // Verify the token
     const decoded = jwt.verify(token, appConfig.SECRET_KEY);
-    req.session.user = decoded.username
+    req.session.user_id = decoded.user_id
+    console.log("Session Id", req.session.user_id)
     next()
   } catch (error) {
     console.error(error);

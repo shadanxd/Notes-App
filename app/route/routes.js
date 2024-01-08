@@ -11,7 +11,7 @@ module.exports = app =>{
     router.get('/notes', authenticator.authenticate)
     router.get('/notes/:id', authenticator.authenticate)
 
-    router.post('/notes/create', authenticator.authenticate)
+    router.post('/notes/create', authenticator.authenticate, controller.addNewNote)
     router.put('/notes/update/:id', authenticator.authenticate)
 
     router.delete('/notes/delete/:id', authenticator.authenticate)
