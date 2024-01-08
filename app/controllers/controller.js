@@ -40,3 +40,26 @@ exports.addNewNote = (req, res) => {
         })
       });
 }
+
+exports.findAll = async (req, res) => {
+    try {
+      const notes = await NoteModel.findAll({
+        where: { user_id: req.session.user_id },
+        attributes: ['title', 'content'],
+      });
+  
+      if (notes.length === 0) {
+        res.status(400).send({ message: 'No notes found' });
+        return;
+      }
+  
+      // Use map to convert each Sequelize instance to JSON
+      const notesJSON = notes.map((note) => note.toJSON());
+  
+      res.status(200).send(notesJSON);
+      return;
+    } catch (error) {
+      console.error(error);
+      res.status(500).send({ message: 'Internal Server Error' });
+    }
+  };
