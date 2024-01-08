@@ -1,5 +1,5 @@
 const UserModel = require('../model/user-model')
-const NoteModel = require('../model/notes-model')
+const NoteModel = require('../model/notes-model');
 
 exports.signup = (req, res) => {
     UserModel.create({
@@ -82,7 +82,7 @@ exports.findAll = async (req, res) => {
       res.status(500).send({ message: 'Internal Server Error' });
     }
   };
-
+  
   exports.deleteNote = async (req, res) => {
     try {
       const notes = await NoteModel.destroy({
@@ -100,3 +100,42 @@ exports.findAll = async (req, res) => {
       res.status(500).send({ message: 'Internal Server Error' });
     }
   };
+
+  exports.updateNote = async (req, res) => {
+    try {
+      const notes = await NoteModel.update({
+        content: req.body.content,
+        title: req.body.title
+      }, {
+        where: { user_id: req.session.user_id, note_id: req.params.id },
+        individualHooks: true
+      });
+  
+      if (notes[0]==0) {
+        res.status(400).send({ message: 'No notes found' });
+        return;
+      }
+      res.status(200).send({message: "note updated"});
+      return;
+    } catch (error) {
+      console.error(error);
+      res.status(500).send({ message: 'Internal Server Error' });
+    }
+  };
+
+  exports.searchNote = async (req, res) => {
+    try{
+        const notes = await NoteModel.searchKeyword(req.session.user_id, req.query.keyword)
+        if (!notes || notes.length == 0) {
+            res.status(400).send({ message: 'No notes found' });
+            return;
+          }
+      
+          res.status(200).send(notes);
+          return;
+    }
+    catch (error) {
+        console.error(error);
+        res.status(500).send({ message: 'Internal Server Error' });
+      }
+  }
