@@ -49,15 +49,15 @@ const Note = sequelize.define('Note', {
   });
 
   // Custom method to perform a full-text search using raw SQL query
-  Note.searchByKeyword = async (keyword) => {
+  Note.searchKeyword = async (user_id, keyword) => {
     const query = `
-      SELECT *
+      SELECT title, content
       FROM "Notes"
-      WHERE "content_vector" @@ to_tsquery('english', :keyword)
+      WHERE "user_id" = :user_id
+        AND "content_vector" @@ to_tsquery('english', :keyword)
     `;
-  
     return sequelize.query(query, {
-      replacements: { keyword },
+      replacements: { user_id, keyword },
       type: sequelize.QueryTypes.SELECT,
     });
   };

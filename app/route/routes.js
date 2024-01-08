@@ -18,7 +18,7 @@ module.exports = app =>{
 
     router.get('/notes/:id/share', authenticator.authenticate)
 
-    router.get('/notes/search', authenticator.authenticate)
+    router.get('/search', authenticator.authenticate, controller.searchNote)
 
     app.use('/', router)
 };

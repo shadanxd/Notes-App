@@ -59,7 +59,6 @@ const token = req.headers.authorization;
     // Verify the token
     const decoded = jwt.verify(token, appConfig.SECRET_KEY);
     req.session.user_id = decoded.user_id
-    console.log("Session Id", req.session.user_id)
     next()
   } catch (error) {
     console.error(error);
