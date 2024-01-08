@@ -8,8 +8,8 @@ module.exports = app =>{
     router.post('/auth/login', authenticator.login)
 
     //Notes routes
-    router.get('/notes', authenticator.authenticate)
-    router.get('/notes/:id', authenticator.authenticate)
+    router.get('/notes', authenticator.authenticate, controller.findAll)
+    router.get('/notes/:id', authenticator.authenticate, controller.findOne)
 
     router.post('/notes/create', authenticator.authenticate, controller.addNewNote)
     router.put('/notes/update/:id', authenticator.authenticate)
