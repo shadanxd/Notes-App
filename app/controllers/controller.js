@@ -45,7 +45,7 @@ exports.findAll = async (req, res) => {
     try {
       const notes = await NoteModel.findAll({
         where: { user_id: req.session.user_id },
-        attributes: ['title', 'content'],
+        attributes: ['note_id', 'title', 'content'],
       });
   
       if (!notes || notes.length == 0) {
@@ -68,7 +68,7 @@ exports.findAll = async (req, res) => {
     try {
       const notes = await NoteModel.findOne({
         where: { user_id: req.session.user_id, note_id: req.params.id },
-        attributes: ['title', 'content'],
+        attributes: ['note_id', 'title', 'content'],
       });
   
       if (!notes) {
@@ -138,4 +138,34 @@ exports.findAll = async (req, res) => {
         console.error(error);
         res.status(500).send({ message: 'Internal Server Error' });
       }
+  }
+
+  exports.shareNote = async (req, res) => {
+    try{
+        const notes = await NoteModel.findOne({
+            where: { user_id: req.session.user_id, note_id: req.params.id },
+            attributes: ['note_id', 'title', 'content'],
+          });
+      
+          if (!notes) {
+            res.status(400).send({ message: 'No notes found' });
+            return;
+          }
+          const user_name = await UserModel.findOne({
+            where: {id: req.session.user_id},
+            attributes: ['name']
+          })
+          const shared_note = {
+            shared_by: user_name.name,
+            title: notes.title,
+            content: notes.content
+          }
+
+          res.status(200).send(shared_note);
+          return;    }
+    catch (error) {
+        console.error(error);
+        res.status(500).send({ message: 'Internal Server Error' });
+      }
+
   }
