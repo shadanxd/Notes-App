@@ -13,7 +13,7 @@ exports.register = async (req, res, next) => {
       return;
     }
 
-    const hashedPassword = await bcrypt.hash(password, 10)
+    const hashedPassword = await bcrypt.hash(password, appConfig.SALTING)
     req.body.password = hashedPassword
     //hashpassword and send it to create user
     next()
@@ -40,7 +40,7 @@ exports.login = async (req, res) =>{
     user_id = existing_user.id
     console.log("user_id", user_id)
     // Generate a JWT token
-    const token = jwt.sign({ user_id }, appConfig.SECRET_KEY, { expiresIn: '1h' });
+    const token = jwt.sign({ user_id }, appConfig.SECRET_KEY, { expiresIn: appConfig.TOKEN_EXPIRY });
 
     res.json({ token });
   } catch (error) {

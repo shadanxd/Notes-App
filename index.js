@@ -5,6 +5,7 @@ const PORT = appConfig.port;
 const sequelize = require('./app/model/db.js')
 const session = require('express-session');
 
+
 app.use(express.json());
 
 app.use(express.urlencoded({extended: true}));
@@ -16,6 +17,7 @@ app.use(
       saveUninitialized: true
     })
   );
+
 
 app.get('/', (req, res) =>{
     res.send('Welcome to Notes App Backend')
