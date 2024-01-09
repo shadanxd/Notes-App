@@ -69,7 +69,9 @@ module.exports ={
     SECRET_KEY: 'RTwEYNjU71sdRJbG6M6LOuF0CirfisUe',
     SESSION_KEY: 'o7Gnbw9otu',
     SALTING: 10,
-    TOKEN_EXPIRY : '1h'
+    TOKEN_EXPIRY : '1h',
+    MAX_REQUEST: 15,
+    TIME_RANGE_IN_MS: 600000
 };
 ```
 - Step 4 db-config.js sample

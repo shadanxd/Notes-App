@@ -4,6 +4,7 @@ const app = express();
 const PORT = appConfig.port;
 const sequelize = require('./app/model/db.js')
 const session = require('express-session');
+const rateLimit = require('express-rate-limit');
 
 
 app.use(express.json());
@@ -18,6 +19,13 @@ app.use(
     })
   );
 
+const limiter = rateLimit({
+    windowMs: appConfig.TIME_RANGE_IN_MS, // IN Milliseconds 
+    max: appConfig.MAX_REQUEST, // limit each IP to 100 requests per windowMs
+    message: 'Too many requests from this IP, please try again later.',
+});
+
+app.use(limiter);
 
 app.get('/', (req, res) =>{
     res.send('Welcome to Notes App Backend')
